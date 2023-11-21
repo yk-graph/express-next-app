@@ -17,8 +17,20 @@ export async function signup(req: Request, res: Response) {
     }
 
     const { name, email, password } = req.body
-    const hashedPassword = await hash(password, 10)
 
+    // emailの重複チェック
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    })
+
+    if (user) {
+      return res.status(400).json({ msg: 'そのメールアドレスは既に登録されています' })
+    }
+
+    // パスワードをハッシュ化
+    const hashedPassword = await hash(password, 10)
     const result = await prisma.user.create({
       data: {
         name,
@@ -27,9 +39,9 @@ export async function signup(req: Request, res: Response) {
       },
     })
 
-    res.status(201).json(result)
+    return res.status(201).json(result)
   } catch (error) {
     console.log(error)
-    res.status(500).json({ msg: '不正なエラーが発生しました。' })
+    res.status(500).json({ msg: '不正なエラーが発生しました' })
   }
 }
