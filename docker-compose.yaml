@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  db:
+    # dockerhubのmysqlのイメージを使用
+    image: mysql:8.0
+    # M1 Macの場合はplatformをlinux/amd64に指定する
+    platform: linux/amd64
+    # コンテナ名を指定
+    container_name: express-next-app-db
+    ports:
+      - 3306:3306
+    # ボリューム領域を指定 ※ボリュームの指定 -> {ボリューム名}:{コンテナ内の絶対パス}
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=express-next-app
+
+# ボリューム領域の指定
+volumes:
+  mysql:
