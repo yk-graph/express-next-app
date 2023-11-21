@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext", // moduleをNodeNextを指定することで、ES2015以降の構文を利用できる
+    "moduleResolution": "NodeNext", //moduleResolutionをNodeNextにすることで、import文のパス解決をNode.jsのモジュール解決アルゴリズムに準拠する
+    "baseUrl": "src", // baseUrlをsrcにすることで、import文のパスをsrcからの相対パスで指定できる
+    "outDir": "dist", // outDirをdistにすることで、コンパイル後のファイルをdistディレクトリに出力する
+    "sourceMap": true,
+    "noImplicitAny": true // noImplicitAnyをtrueにすることで、暗黙的なany型の使用を禁止する
+  },
+  "include": ["src/**/*"] // includeをsrc/**/*にすることで、srcディレクトリ以下のファイルをコンパイル対象にする
+}
