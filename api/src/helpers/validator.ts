@@ -1,6 +1,6 @@
 import { body } from 'express-validator'
 
-export const signupValidator = [
+export const registerValidator = [
   body('name').notEmpty().withMessage('名前を入力してください'),
   body('email').notEmpty().withMessage('メールアドレスを入力してください'),
   body('email').isEmail().withMessage('メールアドレスの形式が不正です'),

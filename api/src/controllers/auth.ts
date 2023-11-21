@@ -6,8 +6,8 @@ import { Prisma, PrismaClient } from '@prisma/client'
 // PrismaClientのインスタンスを作成
 const prisma = new PrismaClient()
 
-// 新規作成: /api/books
-export async function signup(req: Request, res: Response) {
+// 新規登録 POST /api/auth/register
+export async function register(req: Request, res: Response) {
   try {
     const errors = validationResult(req) // バリデーションでエラーになった場合は戻り値に値が入る
 
@@ -31,6 +31,8 @@ export async function signup(req: Request, res: Response) {
 
     // パスワードをハッシュ化
     const hashedPassword = await hash(password, 10)
+
+    // ユーザーの作成
     const result = await prisma.user.create({
       data: {
         name,
