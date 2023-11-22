@@ -31,7 +31,7 @@ export async function register(req: Request, res: Response) {
     }
 
     // パスワードをハッシュ化
-    const hashedPassword = await hash(password, 10)
+    const hashedPassword = await hash(password, 12)
 
     // ユーザーの作成
     const result = await prisma.user.create({
