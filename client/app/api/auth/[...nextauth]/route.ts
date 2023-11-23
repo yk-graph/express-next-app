@@ -1,19 +1,13 @@
 import NextAuth, { type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { compare } from 'bcrypt'
-import axios from 'axios'
 
-const axiosInstance = axios.create({
-  baseURL: process.env.API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
+import axiosInstance from '@/lib/axios'
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      // サインインフォームに表示する名前を指定できる
+      // サインインフォームに表示する名前を指定できる※オリジナルでログインページを用意する場合は不要
       name: 'Login',
       // credentialsオブジェクトにキーを追加することで送信するフィールドを指定できる
       credentials: {
@@ -55,6 +49,11 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
 
+  // サインインページのパスを指定
+  pages: {
+    signIn: '/login',
+  },
+
   // セッションの設定 - JWTを使用したセッションを有効にする
   session: {
     strategy: 'jwt',
@@ -64,17 +63,12 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     // jwtが呼ばれた後に実行される
     async session({ session, token }) {
-      console.log('session session ->', session)
-      console.log('session token ->', token)
-
       // ここでreturnされる値はuseSessionやgetSessionの戻り値になる
       return { ...session, user: { ...session.user, id: token.id } }
     },
 
     // JWTを使用している場合，useSessionやgetSessionが呼ばれるときjwt関数が実行される
     async jwt({ token, user }) {
-      console.log('jwt token ->', token)
-      console.log('jwt user ->', user)
       // 初回のログイン成功時にのみuserの中に値が入っている（2回目以降はundefinedになる）
       if (user) {
         return {

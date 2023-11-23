@@ -1,9 +1,9 @@
-import axios from 'axios'
+import axiosInstance from '@/lib/axios'
 
 export async function getUsers() {
   try {
-    const { data } = await axios.get(`${process.env.API_URL}/users`)
-    return data
+    const { data: users } = await axiosInstance.get('/users')
+    return users
   } catch (error) {
     console.log('getUsers Error', error)
   }
