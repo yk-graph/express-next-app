@@ -16,3 +16,6 @@ Content-Type: application/json
   "email": "yokokura.tatsuya@gmail.com",
   "password": "password"
 }
+
+###
+GET http://localhost:8080/api/users
