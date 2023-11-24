@@ -1,7 +1,13 @@
 import express from 'express'
 
-import { activateValidator, loginValidator, registerValidator } from '../helpers/validator'
-import { activate, login, register } from '../controllers/auth'
+import {
+  activateValidator,
+  forgotPasswordValidator,
+  loginValidator,
+  passwordResetValidator,
+  registerValidator,
+} from '../helpers/validator'
+import { activate, forgotPassword, login, passwordReset, register } from '../controllers/auth'
 
 const router = express.Router()
 
@@ -13,5 +19,11 @@ router.post('/login', loginValidator, login)
 
 // アクティベート POST /api/auth/acitivate
 router.post('/activate', activateValidator, activate)
+
+// パスワードリセットtoken発行 POST /api/auth/forgot-password
+router.post('/forgot-password', forgotPasswordValidator, forgotPassword)
+
+// パスワードリセット PATCH /api/auth/password-reset
+router.patch('/password-reset', passwordResetValidator, passwordReset)
 
 export default router

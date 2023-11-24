@@ -2,9 +2,9 @@ POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
 {
-  "name": "kimura",
-  "email": "kimura@gmail.com",
-  "password": "kimura"
+  "name": "yokokura",
+  "email": "yokokura.tatsuya@gmail.com",
+  "password": "yujin4434"
 }
 
 ###
@@ -13,8 +13,8 @@ POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "tanaka@gmail.com",
-  "password": "tanaka"
+  "email": "yokokura.tatsuya@gmail.com",
+  "password": "yujin4434"
 }
 
 ###
@@ -24,6 +24,26 @@ Content-Type: application/json
 
 {
   "token": "c4de861e932f4616b7bdbbcdbd5063bc7efaeea1fb2f4607ad1bed2d48ff2aa7"
+}
+
+###
+
+POST http://localhost:8080/api/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": "yokokura.tatsuya@gmail.com"
+}
+
+###
+
+PATCH  http://localhost:8080/api/auth/password-reset
+Content-Type: application/json
+
+{
+  "token": "bcdd1e1cc8e144e183c9241fc2a12489d07802ba5cfb46f8b7456edc05f675c5",
+  "email": "yokokura.tatsuya@gmail.com",
+  "password": "yujin4434"
 }
 
 ###

@@ -7,10 +7,10 @@ env.config()
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY
 const SENDGRID_DOMAIN = process.env.SENDGRID_DOMAIN
 
-export async function sendVerificationMail(email: string, token: string) {
+export async function sendResetPasswordMail(email: string, token: string) {
   const maitContent = `
-    <p>以下のリンクをクリックして、アカウントを有効にしてください。</p>
-    <a href="http://localhost:3000/activate?token=${token}">アカウントを有効にする</a>
+    <p>以下のリンクをクリックして、パスワードを再設定してください。</p>
+    <a href="http://localhost:3000/password-reset?token=${token}&email=${email}">パスワードを再設定する</a>
   `
 
   try {
@@ -23,7 +23,7 @@ export async function sendVerificationMail(email: string, token: string) {
         personalizations: [
           {
             to: [{ email }],
-            subject: 'こんにちは！',
+            subject: 'パスワード再設定',
           },
         ],
         from: {
