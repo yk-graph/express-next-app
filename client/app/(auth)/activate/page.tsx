@@ -6,9 +6,9 @@ import { Button } from '@/components/ui/button'
 export default async function ActivatePage({ searchParams }: { searchParams: { token: string } }) {
   const { token } = searchParams
 
-  const isactivate = await activate(token)
+  const isActivate = await activate(token)
 
-  return isactivate ? (
+  return isActivate ? (
     <div className="text-center">
       <p className="text-xl font-semibold mb-4">認証完了です!</p>
       <Link href="/">トップページへ</Link>
