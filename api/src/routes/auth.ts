@@ -1,7 +1,7 @@
 import express from 'express'
 
-import { loginValidator, registerValidator } from '../helpers/validator'
-import { login, register } from '../controllers/auth'
+import { activateValidator, loginValidator, registerValidator } from '../helpers/validator'
+import { activate, login, register } from '../controllers/auth'
 
 const router = express.Router()
 
@@ -11,6 +11,7 @@ router.post('/register', registerValidator, register)
 // ログイン POST /api/auth/login
 router.post('/login', loginValidator, login)
 
-// ログアウト /api/auth/logout
+// アクティベート POST /api/auth/acitivate
+router.post('/activate', activateValidator, activate)
 
 export default router

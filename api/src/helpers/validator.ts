@@ -14,3 +14,5 @@ export const loginValidator = [
   body('password').notEmpty().withMessage('パスワードを入力してください'),
   body('password').isLength({ min: 4 }).withMessage('パスワードは4文字以上で入力してください'),
 ]
+
+export const activateValidator = [body('token').notEmpty().withMessage('tokenがありません')]

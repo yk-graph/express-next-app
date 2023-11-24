@@ -2,9 +2,9 @@ POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
 {
-  "name": "yokokura",
-  "email": "yokokura.tatsuya@gmail.com",
-  "password": "password"
+  "name": "kimura",
+  "email": "kimura@gmail.com",
+  "password": "kimura"
 }
 
 ###
@@ -15,6 +15,15 @@ Content-Type: application/json
 {
   "email": "tanaka@gmail.com",
   "password": "tanaka"
+}
+
+###
+
+POST http://localhost:8080/api/auth/activate
+Content-Type: application/json
+
+{
+  "token": "c4de861e932f4616b7bdbbcdbd5063bc7efaeea1fb2f4607ad1bed2d48ff2aa7"
 }
 
 ###
