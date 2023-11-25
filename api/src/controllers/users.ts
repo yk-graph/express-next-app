@@ -1,7 +1,5 @@
 import { Request, Response } from 'express'
-import { validationResult } from 'express-validator'
-import { compare, hash } from 'bcrypt'
-import { Prisma, PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 // PrismaClientのインスタンスを作成
 const prisma = new PrismaClient()

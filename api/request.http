@@ -47,4 +47,13 @@ Content-Type: application/json
 }
 
 ###
+
+GET  http://localhost:8080/api/me
+Content-Type: application/json
+
+{
+  "email": "yokokura.tatsuya@gmail.com"
+}
+
+###
 GET http://localhost:8080/api/users
