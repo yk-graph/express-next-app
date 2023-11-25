@@ -48,12 +48,8 @@ Content-Type: application/json
 
 ###
 
-GET  http://localhost:8080/api/me
+GET  http://localhost:8080/api/me?email=yokokura.tatsuya@gmail.com
 Content-Type: application/json
-
-{
-  "email": "yokokura.tatsuya@gmail.com"
-}
 
 ###
 GET http://localhost:8080/api/users

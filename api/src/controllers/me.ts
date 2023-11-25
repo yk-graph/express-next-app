@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 
 export async function getMe(req: Request, res: Response) {
   try {
-    const { email } = req.body
+    const email = req.query.email as string
 
     const user = await prisma.user.findUnique({
       where: {
