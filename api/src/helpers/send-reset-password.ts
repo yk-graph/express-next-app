@@ -14,7 +14,7 @@ export async function sendResetPasswordMail(email: string, token: string) {
 
   try {
     const data = await resend.emails.send({
-      from: 'Info <onboarding@resend.dev>',
+      from: 'Info <info@laugh-tech.jp>',
       to: email,
       subject: 'パスワード再設定',
       html: maitContent,
