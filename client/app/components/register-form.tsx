@@ -12,7 +12,6 @@ export const RegisterForm = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [status, setStatus] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,8 +25,12 @@ export const RegisterForm = () => {
       })
 
       if (res.status === 200) {
-        setStatus(true)
-        setError('登録したメールアドレスにアカウント有効化のリンクを送りました。24時間以内にご確認ください')
+        // 成功したら入力されたメールアドレスとパスワードでログインしてトップページにリダイレクトする
+        await signIn('credentials', {
+          email,
+          password,
+          callbackUrl: '/',
+        })
       }
     } catch (error: any) {
       const res = error.response
@@ -77,7 +80,7 @@ export const RegisterForm = () => {
       </div>
       <div className="w-full">
         <Button className="w-full" size="lg">
-          {status ? 'OK!' : 'Register'}
+          Register
         </Button>
         {error && <p className="text-sm text-red-500">{error}</p>}
       </div>

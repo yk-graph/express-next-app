@@ -5,7 +5,7 @@ import { randomUUID } from 'crypto'
 import { PrismaClient } from '@prisma/client'
 
 import { sendVerificationMail } from '../helpers/send-verification'
-import { sendResetPasswordMail } from 'helpers/send-reset-password'
+import { sendResetPasswordMail } from '../helpers/send-reset-password'
 
 // PrismaClientのインスタンスを作成
 const prisma = new PrismaClient()
@@ -33,8 +33,8 @@ export async function register(req: Request, res: Response) {
       return res.status(400).json({ msg: 'そのメールアドレスは既に登録されています' })
     }
 
-    // ActivateTokenテーブルのtokenを作成（uuidを2つ結合した後にreplaceでハイフンを削除した値を作成）
-    const token = `${randomUUID()}${randomUUID()}`.replace(/-/g, '')
+    // ActivateTokenテーブルのtokenを作成（uuidを2つ結合した後にreplaceでハイフンを削除した値を作成）-> 登録処理でメールを送らない場合はactivateTokenは不要
+    // const token = `${randomUUID()}${randomUUID()}`.replace(/-/g, '')
 
     // パスワードをハッシュ化
     const hashedPassword = await hash(password, 12)
@@ -45,22 +45,23 @@ export async function register(req: Request, res: Response) {
         name,
         email,
         password: hashedPassword,
+        isActivated: true, // 登録処理でメールを送る場合はこの行は不要（デフォルトは false になり、確認メールでユーザーの有効化がされたときに true になるため）
       },
     })
 
-    // ActivateTokenの作成
-    const createdActivateToken = await prisma.activateToken.create({
-      data: {
-        token,
-        userId: createdUser.id,
-      },
-    })
+    // ActivateTokenの作成 -> 登録処理でメールを送らない場合はactivateTokenは不要
+    // const createdActivateToken = await prisma.activateToken.create({
+    //   data: {
+    //     token,
+    //     userId: createdUser.id,
+    //   },
+    // })
 
-    // ユーザーとActivateTokenの作成が完了したらメールを送信する
-    if (createdUser && createdActivateToken) {
-      // メール送信
-      await sendVerificationMail(email, token)
-    }
+    // ユーザーとActivateTokenの作成が完了したらメールを送信する -> 登録処理でメールを送らない場合はactivateTokenは不要
+    // if (createdUser && createdActivateToken) {
+    //   // メール送信
+    //   await sendVerificationMail(email, token)
+    // }
 
     return res.status(200).end()
   } catch (error) {
@@ -205,10 +206,10 @@ export async function forgotPassword(req: Request, res: Response) {
     })
 
     // PasswordResetTokenの作成が完了したらメールを送信する
-    // if (createdPasswordResetToken) {
-    //   // メール送信
-    //   await sendResetPasswordMail(email, token)
-    // }
+    if (createdPasswordResetToken) {
+      // メール送信
+      await sendResetPasswordMail(email, token)
+    }
 
     return res.status(200).json(createdPasswordResetToken)
   } catch (error) {
