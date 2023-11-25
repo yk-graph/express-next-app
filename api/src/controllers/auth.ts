@@ -57,10 +57,10 @@ export async function register(req: Request, res: Response) {
     })
 
     // ユーザーとActivateTokenの作成が完了したらメールを送信する
-    // if (createdUser && createdActivateToken) {
-    //   // メール送信
-    //   await sendVerificationMail(email, token)
-    // }
+    if (createdUser && createdActivateToken) {
+      // メール送信
+      await sendVerificationMail(email, token)
+    }
 
     return res.status(200).end()
   } catch (error) {
