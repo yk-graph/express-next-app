@@ -1,19 +1,16 @@
-import Link from 'next/link'
-
 import { activate } from '@/actions/auth'
 import { Button } from '@/components/ui/button'
+import { ActicateButton } from '@/components/activate-button'
 
 export default async function ActivatePage({ searchParams }: { searchParams: { token: string } }) {
   const { token } = searchParams
 
-  const isActivate = await activate(token)
+  const activatedUser = await activate(token)
 
-  return isActivate ? (
+  return activatedUser ? (
     <div className="text-center">
       <p className="text-xl font-semibold mb-4">認証完了です!</p>
-      <Link href="login">
-        <Button>ログインページへ</Button>
-      </Link>
+      <ActicateButton user={activatedUser} />
     </div>
   ) : (
     <div className="text-center">

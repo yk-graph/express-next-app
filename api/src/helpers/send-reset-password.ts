@@ -9,8 +9,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 export async function sendResetPasswordMail(email: string, token: string) {
   const maitContent = `
 <p>以下のリンクをクリックして、パスワードを再設定してください。</p>
-<a href="http://localhost:3000/password-reset?token=${token}&email=${email}">パスワードを再設定する</a>
-  `
+<a href="http://localhost:3000/password-reset?token=${token}&email=${email}">パスワードを再設定する</a>`
 
   try {
     const data = await resend.emails.send({

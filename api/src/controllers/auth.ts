@@ -3,6 +3,11 @@ import { validationResult } from 'express-validator'
 import { compare, hash } from 'bcrypt'
 import { randomUUID } from 'crypto'
 import { PrismaClient } from '@prisma/client'
+import jwt from 'jsonwebtoken'
+import env from 'dotenv'
+
+// .envの読み込み
+env.config()
 
 import { sendVerificationMail } from '../helpers/send-verification'
 import { sendResetPasswordMail } from '../helpers/send-reset-password'
@@ -36,6 +41,14 @@ export async function register(req: Request, res: Response) {
     // ActivateTokenテーブルのtokenを作成（uuidを2つ結合した後にreplaceでハイフンを削除した値を作成）-> 登録処理でメールを送らない場合はactivateTokenは不要
     // const token = `${randomUUID()}${randomUUID()}`.replace(/-/g, '')
 
+    // ActivateTokenテーブルのtokenを作成 -> JWTのtokenを作成 email と password を payload にして作成するケース
+    const payload = {
+      email,
+      password,
+    }
+    // ★重要!! JWTのsecretはフロント側と合わせる必要がある
+    const token = jwt.sign(payload, process.env.JWT_SECRET as string)
+
     // パスワードをハッシュ化
     const hashedPassword = await hash(password, 12)
 
@@ -45,23 +58,23 @@ export async function register(req: Request, res: Response) {
         name,
         email,
         password: hashedPassword,
-        isActivated: true, // 登録処理でメールを送る場合はこの行は不要（デフォルトは false になり、確認メールでユーザーの有効化がされたときに true になるため）
+        // isActivated: true, // 登録処理でメールを送る場合はこの行は不要（デフォルトは false になり、確認メールでユーザーの有効化がされたときに true になるため）
       },
     })
 
     // ActivateTokenの作成 -> 登録処理でメールを送らない場合はactivateTokenは不要
-    // const createdActivateToken = await prisma.activateToken.create({
-    //   data: {
-    //     token,
-    //     userId: createdUser.id,
-    //   },
-    // })
+    const createdActivateToken = await prisma.activateToken.create({
+      data: {
+        token,
+        userId: createdUser.id,
+      },
+    })
 
     // ユーザーとActivateTokenの作成が完了したらメールを送信する -> 登録処理でメールを送らない場合はactivateTokenは不要
-    // if (createdUser && createdActivateToken) {
-    //   // メール送信
-    //   await sendVerificationMail(email, token)
-    // }
+    if (createdUser && createdActivateToken) {
+      // メール送信
+      await sendVerificationMail(email, token)
+    }
 
     return res.status(200).end()
   } catch (error) {
@@ -109,7 +122,7 @@ export async function login(req: Request, res: Response) {
   }
 }
 
-// アクティベート POST /api/auth/acitivate
+// アクティベート POST /api/auth/activate
 export async function activate(req: Request, res: Response) {
   try {
     const errors = validationResult(req) // バリデーションでエラーになった場合は戻り値に値が入る

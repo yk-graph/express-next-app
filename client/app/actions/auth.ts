@@ -1,4 +1,10 @@
 import axiosInstance from '@/lib/axios'
+import jwt from 'jsonwebtoken'
+
+type TokenPayload = {
+  email: string
+  password: string
+}
 
 export async function register(email: string, password: string) {
   try {
@@ -16,15 +22,20 @@ export async function activate(token: string) {
     const res = await axiosInstance.post('/auth/activate', {
       token,
     })
-    console.log('activate res', res)
 
     if (res.status === 200) {
-      return true
+      // tokenをdecodeして、payloadに含まれている email と password の値を取得する ★重要!!API側のsecretと同じ値を指定する
+      const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as TokenPayload
+
+      return {
+        email: decoded.email,
+        password: decoded.password,
+      }
     } else {
-      return false
+      return null
     }
   } catch (error) {
     console.log('activate Error', error)
-    return false
+    return null
   }
 }

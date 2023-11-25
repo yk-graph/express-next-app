@@ -17,7 +17,7 @@ router.post('/register', registerValidator, register)
 // ログイン POST /api/auth/login
 router.post('/login', loginValidator, login)
 
-// アクティベート POST /api/auth/acitivate
+// アクティベート POST /api/auth/activate
 router.post('/activate', activateValidator, activate)
 
 // パスワードリセットtoken発行 POST /api/auth/forgot-password
