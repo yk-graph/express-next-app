@@ -11,7 +11,9 @@ export default async function ActivatePage({ searchParams }: { searchParams: { t
   return isActivate ? (
     <div className="text-center">
       <p className="text-xl font-semibold mb-4">認証完了です!</p>
-      <Link href="/">トップページへ</Link>
+      <Link href="login">
+        <Button>ログインページへ</Button>
+      </Link>
     </div>
   ) : (
     <div className="text-center">

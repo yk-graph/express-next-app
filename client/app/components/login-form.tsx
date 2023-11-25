@@ -65,7 +65,7 @@ export const LoginForm = () => {
       </div>
       <div className="w-full">
         <Button className="w-full" size="lg">
-          Register
+          Login
         </Button>
         {error && <p className="text-sm text-red-500">{error}</p>}
       </div>

@@ -1,9 +1,16 @@
 'use client'
 
+import { FC } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn, signOut } from 'next-auth/react'
 
-export const Header = () => {
+import type { User } from '@/types/user'
+
+interface Props {
+  currentUser: User | null
+}
+
+export const Header: FC<Props> = ({ currentUser }) => {
   const router = useRouter()
 
   return (
@@ -20,13 +27,24 @@ export const Header = () => {
           Profile
         </button>
 
-        <button className="px-4 py-2 text-sm border border-slate-600 rounded-md" onClick={() => signOut()}>
-          Sign out
-        </button>
+        {currentUser ? (
+          <button className="px-4 py-2 text-sm border border-slate-600 rounded-md" onClick={() => signOut()}>
+            Sign out
+          </button>
+        ) : (
+          <>
+            <button className="px-4 py-2 text-sm border border-slate-600 rounded-md" onClick={() => signIn()}>
+              Sign in
+            </button>
 
-        <button className="px-4 py-2 text-sm border border-slate-600 rounded-md" onClick={() => signIn()}>
-          Sign in
-        </button>
+            <button
+              className="px-4 py-2 text-sm border border-slate-600 rounded-md"
+              onClick={() => router.push('/register')}
+            >
+              Register
+            </button>
+          </>
+        )}
       </div>
     </header>
   )

@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth'
 
-import { authOptions } from '@/api/auth/[...nextauth]/route'
+import { authOptions } from '@/lib/next-auth-options'
 import { User } from '@/components/user'
 
 export default async function Home() {
